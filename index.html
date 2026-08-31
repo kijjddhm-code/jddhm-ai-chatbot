@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
+
+  <meta
+    name="description"
+    content="JDDHM Product of AI - AI Chatbot"
+  >
+
+  <link
+    rel="manifest"
+    href="/manifest.json"
+  >
+
+  <title>AI Chatbot</title>
+
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
+</head>
+
+<body>
+
+  <!-- =========================
+       APP
+  ========================== -->
+
+  <div id="app">
+
+    <!-- =========================
+         MOBILE TOP BAR
+    ========================== -->
+
+    <header class="mobile-header">
+
+      <button
+        id="mobileMenuButton"
+        class="icon-button"
+        type="button"
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
+
+      <div class="mobile-logo">
+        🤖 AI Chatbot
+      </div>
+
+      <button
+        id="mobileNewChat"
+        class="icon-button"
+        type="button"
+        aria-label="New chat"
+      >
+        ＋
+      </button>
+
+    </header>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside
+      id="sidebar"
+      class="sidebar"
+    >
+
+      <div class="sidebar-top">
+
+        <div class="brand">
+
+          <div class="brand-icon">
+            🤖
+          </div>
+
+          <div>
+            <div class="brand-name">
+              AI Chatbot
+            </div>
+
+            <div class="brand-subtitle">
+              JDDHM Product of AI
+            </div>
+          </div>
+
+        </div>
+
+
+        <button
+          id="newChatButton"
+          class="new-chat-button"
+          type="button"
+        >
+          <span>＋</span>
+          <span>New Chat</span>
+        </button>
+
+
+        <nav class="sidebar-navigation">
+
+          <button
+            id="homeButton"
+            class="navigation-button active"
+            type="button"
+          >
+            <span>⌂</span>
+            <span>Home</span>
+          </button>
+
+
+          <button
+            id="recentButton"
+            class="navigation-button"
+            type="button"
+          >
+            <span>🕘</span>
+            <span>Recent Chats</span>
+          </button>
+
+
+          <button
+            id="settingsButton"
+            class="navigation-button"
+            type="button"
+          >
+            <span>⚙️</span>
+            <span>Settings</span>
+          </button>
+
+
+          <button
+            id="installButton"
+            class="navigation-button install-button"
+            type="button"
+            hidden
+          >
+            <span>📲</span>
+            <span>Install App</span>
+          </button>
+
+        </nav>
+
+      </div>
+
+
+      <!-- =========================
+           RECENT CHATS
+      ========================== -->
+
+      <div class="recent-section">
+
+        <div class="section-title">
+          RECENT CHATS
+        </div>
+
+        <div
+          id="recentChats"
+          class="recent-chats"
+        >
+
+          <div class="empty-recent">
+            No recent chats
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =========================
+           SIDEBAR BOTTOM
+      ========================== -->
+
+      <div class="sidebar-bottom">
+
+        <div
+          id="usageBox"
+          class="usage-box"
+        >
+
+          <div class="usage-header">
+
+            <span>
+              Free usage
+            </span>
+
+            <strong id="usageCount">
+              0 / 20
+            </strong>
+
+          </div>
+
+          <div class="usage-progress">
+
+            <div
+              id="usageProgress"
+              class="usage-progress-bar"
+              style="width: 0%"
+            ></div>
+
+          </div>
+
+          <p>
+            20 free messages available.
+          </p>
+
+        </div>
+
+
+        <button
+          id="upgradeButton"
+          class="upgrade-button"
+          type="button"
+        >
+          <span>⭐</span>
+          <span>Upgrade</span>
+        </button>
+
+
+        <div
+          id="accountArea"
+          class="account-area"
+        >
+
+          <button
+            id="loginButton"
+            class="account-button"
+            type="button"
+          >
+            Login
+          </button>
+
+          <button
+            id="signupButton"
+            class="account-button primary"
+            type="button"
+          >
+            Create Account
+          </button>
+
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================== -->
+
+    <main class="main">
+
+      <!-- TOP HEADER -->
+
+      <header class="top-header">
+
+        <div class="header-left">
+
+          <button
+            id="desktopMenuButton"
+            class="icon-button desktop-menu-button"
+            type="button"
+            aria-label="Menu"
+          >
+            ☰
+          </button>
+
+          <div>
+
+            <h1>
+              AI Chatbot
+            </h1>
+
+            <span
+              id="onlineStatus"
+              class="online-status"
+            >
+              ● Ready
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+          <button
+            id="headerNewChat"
+            class="header-button"
+            type="button"
+          >
+            ＋ New Chat
+          </button>
+
+          <button
+            id="headerSettings"
+            class="icon-button"
+            type="button"
+            aria-label="Settings"
+          >
+            ⚙️
+          </button>
+
+        </div>
+
+      </header>
+
+
+      <!-- =========================
+           CHAT AREA
+      ========================== -->
+
+      <section
+        id="chatArea"
+        class="chat-area"
+      >
+
+        <!-- WELCOME -->
+
+        <div
+          id="welcomeScreen"
+          class="welcome-screen"
+        >
+
+          <div class="welcome-icon">
+            🤖
+          </div>
+
+          <h2>
+            Welcome to JDDHM Product of AI
+          </h2>
+
+          <h3>
+            AI Chatbot
+          </h3>
+
+          <p>
+            Ask questions, get help, upload files,
+            generate images and more.
+          </p>
+
+
+          <!-- QUICK ACTIONS -->
+
+          <div class="quick-actions">
+
+            <button
+              class="quick-action"
+              data-prompt="Explain artificial intelligence in simple words."
+              type="button"
+            >
+
+              <span class="quick-icon">
+                💡
+              </span>
+
+              <span>
+                Explain something
+              </span>
+
+            </button>
+
+
+            <button
+              class="quick-action"
+              data-prompt="Help me write something."
+              type="button"
+            >
+
+              <span class="quick-icon">
+                ✍️
+              </span>
+
+              <span>
+                Help me write
+              </span>
+
+            </button>
+
+
+            <button
+              class="quick-action"
+              data-prompt="Give me some useful ideas."
+              type="button"
+            >
+
+              <span class="quick-icon">
+                💭
+              </span>
+
+              <span>
+                Give me ideas
+              </span>
+
+            </button>
+
+
+            <button
+              id="quickImageButton"
+              class="quick-action"
+              type="button"
+            >
+
+              <span class="quick-icon">
+                🖼️
+              </span>
+
+              <span>
+                Generate an image
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- MESSAGES -->
+
+        <div
+          id="messages"
+          class="messages"
+          aria-live="polite"
+        ></div>
+
+
+        <!-- TYPING INDICATOR -->
+
+        <div
+          id="typingIndicator"
+          class="typing-indicator"
+          hidden
+        >
+
+          <div class="assistant-avatar">
+            🤖
+          </div>
+
+          <div class="typing-content">
+
+            <span>
+              AI is thinking
+            </span>
+
+            <div class="typing-dots">
+
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =========================
+           COMPOSER
+      ========================== -->
+
+      <section class="composer-container">
+
+        <div
+          id="filePreview"
+          class="file-preview"
+          hidden
+        >
+
+          <div class="file-preview-icon">
+            📎
+          </div>
+
+          <div class="file-preview-info">
+
+            <strong id="fileName">
+              File
+            </strong>
+
+            <span id="fileSize">
+              0 KB
+            </span>
+
+          </div>
+
+          <button
+            id="removeFileButton"
+            class="remove-file-button"
+            type="button"
+            aria-label="Remove file"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <div class="composer">
+
+          <!-- TOOLBAR -->
+
+          <div class="composer-toolbar">
+
+            <div class="composer-tools">
+
+              <button
+                id="attachButton"
+                class="tool-button"
+                type="button"
+                title="Upload a file"
+              >
+                📎
+                <span>
+                  Upload
+                </span>
+              </button>
+
+
+              <button
+                id="imageButton"
+                class="tool-button"
+                type="button"
+                title="Generate an image"
+              >
+                🖼️
+                <span>
+                  Image
+                </span>
+              </button>
+
+
+              <button
+                id="webButton"
+                class="tool-button"
+                type="button"
+                title="Web search"
+              >
+                🔗
+                <span>
+                  Links
+                </span>
+              </button>
+
+            </div>
+
+
+            <div class="composer-status">
+
+              <span id="modelStatus">
+                Gemini AI
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- INPUT -->
+
+          <div class="input-row">
+
+            <textarea
+              id="messageInput"
+              rows="1"
+              maxlength="10000"
+              placeholder="Ask AI anything..."
+              aria-label="Message"
+            ></textarea>
+
+
+            <button
+              id="sendButton"
+              class="send-button"
+              type="button"
+              aria-label="Send message"
+            >
+              <span>
+                ➤
+              </span>
+            </button>
+
+          </div>
+
+
+          <!-- HIDDEN FILE INPUT -->
+
+          <input
+            id="fileInput"
+            type="file"
+            hidden
+            accept=".txt,.pdf,.doc,.docx,.csv,.json,.jpg,.jpeg,.png,.webp"
+          >
+
+
+          <div class="composer-footer">
+
+            <span>
+              AI can make mistakes. Check important information.
+            </span>
+
+            <span id="characterCount">
+              0 / 10000
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- =========================
+       LOGIN MODAL
+  ========================== -->
+
+  <div
+    id="loginModal"
+    class="modal"
+    hidden
+  >
+
+    <div
+      class="modal-overlay"
+      data-close-modal
+    ></div>
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+        type="button"
+      >
+        ×
+      </button>
+
+      <div class="modal-icon">
+        🔐
+      </div>
+
+      <h2>
+        Welcome Back
+      </h2>
+
+      <p>
+        Login to your AI Chatbot account.
+      </p>
+
+
+      <form id="loginForm">
+
+        <label>
+          Email
+
+          <input
+            id="loginEmail"
+            type="email"
+            placeholder="you@example.com"
+            required
+          >
+
+        </label>
+
+
+        <label>
+          Password
+
+          <input
+            id="loginPassword"
+            type="password"
+            placeholder="Password"
+            required
+          >
+
+        </label>
+
+
+        <button
+          class="form-button"
+          type="submit"
+        >
+          Login
+        </button>
+
+      </form>
+
+
+      <p class="modal-footer-text">
+
+        Don't have an account?
+
+        <button
+          id="openSignupFromLogin"
+          class="text-button"
+          type="button"
+        >
+          Create Account
+        </button>
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       SIGNUP MODAL
+  ========================== -->
+
+  <div
+    id="signupModal"
+    class="modal"
+    hidden
+  >
+
+    <div
+      class="modal-overlay"
+      data-close-modal
+    ></div>
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+        type="button"
+      >
+        ×
+      </button>
+
+      <div class="modal-icon">
+        👤
+      </div>
+
+      <h2>
+        Create Account
+      </h2>
+
+      <p>
+        Create your AI Chatbot account.
+      </p>
+
+
+      <form id="signupForm">
+
+        <label>
+          Name
+
+          <input
+            id="signupName"
+            type="text"
+            placeholder="Your name"
+            required
+          >
+
+        </label>
+
+
+        <label>
+          Email
+
+          <input
+            id="signupEmail"
+            type="email"
+            placeholder="you@example.com"
+            required
+          >
+
+        </label>
+
+
+        <label>
+          Password
+
+          <input
+            id="signupPassword"
+            type="password"
+            placeholder="Create a password"
+            minlength="6"
+            required
+          >
+
+        </label>
+
+
+        <button
+          class="form-button"
+          type="submit"
+        >
+          Create Account
+        </button>
+
+      </form>
+
+
+      <p class="modal-footer-text">
+
+        Already have an account?
+
+        <button
+          id="openLoginFromSignup"
+          class="text-button"
+          type="button"
+        >
+          Login
+        </button>
+
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       SETTINGS MODAL
+  ========================== -->
+
+  <div
+    id="settingsModal"
+    class="modal"
+    hidden
+  >
+
+    <div
+      class="modal-overlay"
+      data-close-modal
+    ></div>
+
+    <div class="modal-card settings-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+        type="button"
+      >
+        ×
+      </button>
+
+      <div class="modal-icon">
+        ⚙️
+      </div>
+
+      <h2>
+        Settings
+      </h2>
+
+
+      <!-- THEME -->
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>
+            Dark Theme
+          </strong>
+
+          <p>
+            Use a darker appearance.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            id="darkModeToggle"
+            type="checkbox"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <!-- LARGE TEXT -->
+
+      <div class="setting-row">
+
+        <div>
+
+          <strong>
+            Very Large Answers
+          </strong>
+
+          <p>
+            Make AI answers easier to read.
+          </p>
+
+        </div>
+
+        <label class="switch">
+
+          <input
+            id="largeTextToggle"
+            type="checkbox"
+          >
+
+          <span class="slider"></span>
+
+        </label>
+
+      </div>
+
+
+      <!-- FONT SIZE -->
+
+      <div class="setting-row column">
+
+        <div>
+
+          <strong>
+            Answer Text Size
+          </strong>
+
+          <p>
+            Choose the size of AI answers.
+          </p>
+
+        </div>
+
+
+        <select
+          id="fontSizeSelect"
+          class="setting-select"
+        >
+
+          <option value="16">
+            Normal
+          </option>
+
+          <option value="20">
+            Large
+          </option>
+
+          <option value="28">
+            Very Large
+          </option>
+
+          <option value="36">
+            Huge
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- LANGUAGE -->
+
+      <div class="setting-row column">
+
+        <div>
+
+          <strong>
+            Language
+          </strong>
+
+          <p>
+            Choose your interface language.
+          </p>
+
+        </div>
+
+
+        <select
+          id="languageSelect"
+          class="setting-select"
+        >
+
+          <option value="en">
+            English
+          </option>
+
+          <option value="fr">
+            Français
+          </option>
+
+          <option value="rw">
+            Kinyarwanda
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- CLEAR -->
+
+      <button
+        id="clearChatsButton"
+        class="danger-button"
+        type="button"
+      >
+        🗑️ Clear Recent Chats
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       UPGRADE MODAL
+  ========================== -->
+
+  <div
+    id="upgradeModal"
+    class="modal"
+    hidden
+  >
+
+    <div
+      class="modal-overlay"
+      data-close-modal
+    ></div>
+
+    <div class="modal-card upgrade-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+        type="button"
+      >
+        ×
+      </button>
+
+      <div class="modal-icon">
+        ⭐
+      </div>
+
+      <h2>
+        Upgrade AI Chatbot
+      </h2>
+
+      <p>
+        You have reached the free usage limit.
+      </p>
+
+
+      <div class="upgrade-features">
+
+        <div>
+          ✓ More AI messages
+        </div>
+
+        <div>
+          ✓ File uploads
+        </div>
+
+        <div>
+          ✓ Image generation
+        </div>
+
+        <div>
+          ✓ Longer conversations
+        </div>
+
+      </div>
+
+
+      <div class="payment-box">
+
+        <h3>
+          MoMo Pay
+        </h3>
+
+        <p>
+          Send your payment to:
+        </p>
+
+        <strong class="payment-number">
+          0798990112
+        </strong>
+
+        <p class="payment-note">
+          After payment, contact the administrator
+          with your payment confirmation.
+        </p>
+
+      </div>
+
+
+      <button
+        id="paymentDoneButton"
+        class="form-button"
+        type="button"
+      >
+        I Have Paid
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       IMAGE MODAL
+  ========================== -->
+
+  <div
+    id="imageModal"
+    class="modal"
+    hidden
+  >
+
+    <div
+      class="modal-overlay"
+      data-close-modal
+    ></div>
+
+    <div class="modal-card">
+
+      <button
+        class="modal-close"
+        data-close-modal
+        type="button"
+      >
+        ×
+      </button>
+
+      <div class="modal-icon">
+        🖼️
+      </div>
+
+      <h2>
+        Generate an Image
+      </h2>
+
+      <p>
+        Describe the image you want AI to create.
+      </p>
+
+
+      <textarea
+        id="imagePrompt"
+        class="image-prompt"
+        rows="5"
+        placeholder="Example: A futuristic city in Kigali at sunset..."
+      ></textarea>
+
+
+      <button
+        id="generateImageButton"
+        class="form-button"
+        type="button"
+      >
+        🖼️ Generate Image
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       NOTIFICATION
+  ========================== -->
+
+  <div
+    id="notification"
+    class="notification"
+    role="alert"
+    hidden
+  >
+
+    <span id="notificationIcon">
+      ✓
+    </span>
+
+    <span id="notificationMessage">
+      Done
+    </span>
+
+    <button
+      id="notificationClose"
+      type="button"
+      aria-label="Close notification"
+    >
+      ×
+    </button>
+
+  </div>
+
+
+  <!-- =========================
+       LOADING SCREEN
+  ========================== -->
+
+  <div
+    id="loadingScreen"
+    class="loading-screen"
+    hidden
+  >
+
+    <div class="loading-logo">
+      🤖
+    </div>
+
+    <h2>
+      Welcome to JDDHM Product of AI
+    </h2>
+
+    <p>
+      AI Chatbot
+    </p>
+
+    <div class="loading-spinner"></div>
+
+    <span>
+      Loading...
+    </span>
+
+  </div>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script
+    src="/script.js"
+    defer
+  ></script>
+
+</body>
+</html>
