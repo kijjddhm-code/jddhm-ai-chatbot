@@ -15,7 +15,11 @@ if (!API_KEY) {
 }
 
 app.use(express.json({ limit: "10mb" }));
-app.use(express.static("public"));
+app.use(express.static("."));
+
+app.get("/", (req, res) => {
+  res.sendFile("index.html", { root: process.cwd() });
+});
 
 /* =========================
    HEALTH CHECK
