@@ -90,7 +90,7 @@ Math.min(
 );
 
 progress.style.width =
-  `${percentage}%`;
+  `${percentage}0%`;
 
 }
 }
