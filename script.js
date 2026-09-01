@@ -1,120 +1,212 @@
-const state = {
-messages: [],
-chats: JSON.parse(
-localStorage.getItem("jddhm_chats") || "[]"
-),
-usage: Number(
-localStorage.getItem("jddhm_usage") || 0
-),
-attachedFile: null
+/* =========================================
+JDDHM PRODUCT OF AI
+COMPLETE SCRIPT.JS
+========================================= */
+
+"use strict";
+
+/* =========================================
+CONFIGURATION
+========================================= */
+
+const MAX_FREE_SEARCHES = 1000;
+
+/*
+DEMO ACCESS CODE
+
+IMPORTANT:
+This is visible in the browser JavaScript.
+For a real payment system, verify payment
+on the server instead.
+*/
+const ACCESS_CODE = "777";
+
+const STORAGE_KEYS = {
+chats: "jddhm_chats",
+usage: "jddhm_usage",
+access: "jddhm_access",
+dark: "jddhm_dark",
+large: "jddhm_large",
+font: "jddhm_font",
+user: "jddhm_user"
 };
 
-/* =========================
-HELPER
-========================= */
+/* =========================================
+HELPERS
+========================================= */
 
 const $ = (id) => document.getElementById(id);
 
-/* =========================
+function safeJSON(value, fallback) {
+try {
+return JSON.parse(value);
+} catch {
+return fallback;
+}
+}
+
+/* =========================================
+STATE
+========================================= */
+
+const state = {
+messages: [],
+chats: safeJSON(
+localStorage.getItem(STORAGE_KEYS.chats) || "[]",
+[]
+),
+
+totalUsage: Number(
+localStorage.getItem(STORAGE_KEYS.usage) || 0
+),
+
+hasAccess:
+localStorage.getItem(STORAGE_KEYS.access) === "true",
+
+attachedFile: null,
+
+isSending: false
+};
+
+/* =========================================
 ELEMENTS
-========================= */
+========================================= */
 
 const messageInput = $("messageInput");
 const sendButton = $("sendButton");
 const messagesEl = $("messages");
 const welcomeScreen = $("welcomeScreen");
 const typingIndicator = $("typingIndicator");
+
 const fileInput = $("fileInput");
 const filePreview = $("filePreview");
+
 const sidebarBackdrop = $("sidebarBackdrop");
 
-/* =========================
-SAVE STATE
-========================= */
+/* =========================================
+STORAGE
+========================================= */
 
-function saveState() {
+function saveChats() {
 localStorage.setItem(
-"jddhm_chats",
+STORAGE_KEYS.chats,
 JSON.stringify(state.chats)
-);
-
-localStorage.setItem(
-"jddhm_usage",
-String(state.usage)
 );
 }
 
-/* =========================
+function saveUsage() {
+localStorage.setItem(
+STORAGE_KEYS.usage,
+String(state.totalUsage)
+);
+}
+
+function saveAccess() {
+localStorage.setItem(
+STORAGE_KEYS.access,
+String(state.hasAccess)
+);
+}
+
+/* =========================================
 NOTIFICATIONS
-========================= */
+========================================= */
 
 function notify(message, icon = "✓") {
 const box = $("notification");
 const text = $("notificationMessage");
-const ico = $("notificationIcon");
+const iconEl = $("notificationIcon");
 
 if (!box || !text) return;
 
 text.textContent = message;
 
-if (ico) {
-ico.textContent = icon;
+if (iconEl) {
+iconEl.textContent = icon;
 }
 
 box.hidden = false;
 
-clearTimeout(window.notificationTimer);
+clearTimeout(window.jddhmNotificationTimer);
 
-window.notificationTimer = setTimeout(() => {
+window.jddhmNotificationTimer = setTimeout(() => {
 box.hidden = true;
-}, 3500);
+}, 4000);
 }
 
-/* =========================
+/* =========================================
 USAGE
-========================= */
+========================================= */
 
 function updateUsage() {
-const count = $("usageCount");
+const usageCount = $("usageCount");
 const progress = $("usageProgress");
+const usageBox = $("usageBox");
 
-if (count) {
-count.textContent = "${state.usage} / 1000";
+if (usageCount) {
+if (state.hasAccess) {
+usageCount.textContent = "Unlimited";
+} else {
+usageCount.textContent =
+"${state.totalUsage} / ${MAX_FREE_SEARCHES}";
+}
 }
 
 if (progress) {
-const percentage =
-Math.min(
-(state.usage / 1000) * 100,
+const percentage = Math.min(
+(state.totalUsage / MAX_FREE_SEARCHES) * 100,
 100
 );
 
-progress.style.width =
-  `${percentage}0%`;
+progress.style.width = `${percentage}%`;
+
+}
+
+if (usageBox) {
+const paragraph = usageBox.querySelector("p");
+
+if (paragraph) {
+  if (state.hasAccess) {
+    paragraph.textContent =
+      "Access code accepted. You can continue using AI.";
+  } else if (state.totalUsage >= MAX_FREE_SEARCHES) {
+    paragraph.textContent =
+      "Free searches finished. Upgrade to continue.";
+  } else {
+    const remaining =
+      MAX_FREE_SEARCHES - state.totalUsage;
+
+    paragraph.textContent =
+      `${remaining} free messages remaining.`;
+  }
+}
 
 }
 }
 
-/* =========================
-ADD MESSAGE
-========================= */
+function canSendMessage() {
+return (
+state.hasAccess ||
+state.totalUsage < MAX_FREE_SEARCHES
+);
+}
+
+/* =========================================
+MESSAGE DISPLAY
+========================================= */
 
 function addMessage(role, content) {
 if (!messagesEl) return null;
 
-const wrapper =
-document.createElement("div");
+const wrapper = document.createElement("div");
 
-wrapper.className =
-"message ${role}";
+wrapper.className = "message ${role}";
 
 /* AVATAR */
 
-const avatar =
-document.createElement("div");
+const avatar = document.createElement("div");
 
-avatar.className =
-"message-avatar";
+avatar.className = "message-avatar";
 
 avatar.textContent =
 role === "user"
@@ -123,19 +215,15 @@ role === "user"
 
 /* BODY */
 
-const body =
-document.createElement("div");
+const body = document.createElement("div");
 
-body.className =
-"message-body";
+body.className = "message-body";
 
 /* TEXT */
 
-const text =
-document.createElement("div");
+const text = document.createElement("div");
 
-text.className =
-"message-text";
+text.className = "message-text";
 
 text.textContent = content;
 
@@ -144,30 +232,26 @@ body.appendChild(text);
 /* ASSISTANT ACTIONS */
 
 if (role === "assistant") {
-
 const actions =
-  document.createElement("div");
+document.createElement("div");
 
 actions.className =
   "message-actions";
 
-
 /* COPY */
 
-const copy =
+const copyButton =
   document.createElement("button");
 
-copy.type = "button";
+copyButton.type = "button";
 
-copy.textContent =
+copyButton.textContent =
   "📋 Copy";
 
-copy.addEventListener(
+copyButton.addEventListener(
   "click",
   async () => {
-
     try {
-
       await navigator.clipboard.writeText(
         content
       );
@@ -176,46 +260,36 @@ copy.addEventListener(
         "Answer copied",
         "✓"
       );
-
     } catch {
-
       notify(
         "Copy failed",
         "!"
       );
-
     }
-
   }
 );
 
-
 /* SHARE */
 
-const share =
+const shareButton =
   document.createElement("button");
 
-share.type = "button";
+shareButton.type = "button";
 
-share.textContent =
+shareButton.textContent =
   "📤 Share";
 
-share.addEventListener(
+shareButton.addEventListener(
   "click",
   async () => {
-
     try {
-
       if (navigator.share) {
-
         await navigator.share({
           title:
-            "JDDHM AI Chatbot",
+            "JDDHM Product of AI",
           text: content
         });
-
       } else {
-
         await navigator.clipboard.writeText(
           content
         );
@@ -224,39 +298,32 @@ share.addEventListener(
           "Answer copied for sharing",
           "✓"
         );
-
       }
-
     } catch {
       /* User cancelled sharing */
     }
-
   }
 );
 
-
 /* DOWNLOAD */
 
-const download =
+const downloadButton =
   document.createElement("button");
 
-download.type = "button";
+downloadButton.type = "button";
 
-download.textContent =
+downloadButton.textContent =
   "💾 Download";
 
-download.addEventListener(
+downloadButton.addEventListener(
   "click",
   () => {
-
-    const blob =
-      new Blob(
-        [content],
-        {
-          type:
-            "text/plain"
-        }
-      );
+    const blob = new Blob(
+      [content],
+      {
+        type: "text/plain"
+      }
+    );
 
     const url =
       URL.createObjectURL(blob);
@@ -281,15 +348,13 @@ download.addEventListener(
       "Answer downloaded",
       "✓"
     );
-
   }
 );
 
-
 actions.append(
-  copy,
-  share,
-  download
+  copyButton,
+  shareButton,
+  downloadButton
 );
 
 body.appendChild(actions);
@@ -304,18 +369,16 @@ body
 messagesEl.appendChild(wrapper);
 
 messagesEl.scrollTo({
-top:
-messagesEl.scrollHeight,
-behavior:
-"smooth"
+top: messagesEl.scrollHeight,
+behavior: "smooth"
 });
 
 return wrapper;
 }
 
-/* =========================
-THINKING INDICATOR
-========================= */
+/* =========================================
+TYPING INDICATOR
+========================================= */
 
 function showThinking() {
 if (typingIndicator) {
@@ -334,12 +397,11 @@ typingIndicator.hidden = true;
 }
 }
 
-/* =========================
+/* =========================================
 NEW CHAT
-========================= */
+========================================= */
 
 function newChat() {
-
 state.messages = [];
 
 state.attachedFile = null;
@@ -378,11 +440,25 @@ notify(
 );
 }
 
-/* =========================
+/* =========================================
+ACCESS / UPGRADE
+========================================= */
+
+function showUpgrade() {
+openModal("upgradeModal");
+
+notify(
+"You have used all 1000 free searches.",
+"⭐"
+);
+}
+
+/* =========================================
 SEND MESSAGE
-========================= */
+========================================= */
 
 async function sendMessage(text = null) {
+if (state.isSending) return;
 
 const message =
 text !== null
@@ -391,20 +467,14 @@ text !== null
 
 if (!message) return;
 
-if (state.usage >= 20) {
+/* CHECK FREE LIMIT */
 
-openModal(
-  "upgradeModal"
-);
-
-notify(
-  "Free message limit reached",
-  "⭐"
-);
-
+if (!canSendMessage()) {
+showUpgrade();
 return;
-
 }
+
+state.isSending = true;
 
 if (welcomeScreen) {
 welcomeScreen.hidden = true;
@@ -424,8 +494,7 @@ message
 
 /* CLEAR INPUT */
 
-if (messageInput) {
-
+if (messageInput && text === null) {
 messageInput.value = "";
 
 updateCharacterCount();
@@ -439,54 +508,38 @@ sendButton.disabled = true;
 }
 
 try {
+const response = await fetch(
+"/api/chat",
+{
+method: "POST",
 
-const response =
-  await fetch(
-    "/api/chat",
-    {
-      method:
-        "POST",
+    headers: {
+      "Content-Type":
+        "application/json"
+    },
 
-      headers: {
-        "Content-Type":
-          "application/json"
-      },
-
-      body:
-        JSON.stringify({
-          messages:
-            state.messages
-        })
-    }
-  );
-
+    body: JSON.stringify({
+      messages: state.messages
+    })
+  }
+);
 
 let data;
 
-
 try {
-
-  data =
-    await response.json();
-
+  data = await response.json();
 } catch {
-
   throw new Error(
     "Server returned an invalid response."
   );
-
 }
 
-
 if (!response.ok) {
-
   throw new Error(
     data?.error ||
     `AI request failed (${response.status}).`
   );
-
 }
-
 
 const answer =
   data?.reply ||
@@ -494,33 +547,35 @@ const answer =
   data?.message ||
   "The AI returned no answer.";
 
-
 state.messages.push({
   role: "assistant",
   content: answer
 });
-
 
 addMessage(
   "assistant",
   answer
 );
 
+/*
+  Count only successful AI searches.
+*/
 
-state.usage++;
+if (!state.hasAccess) {
+  state.totalUsage++;
 
-updateUsage();
+  saveUsage();
 
+  updateUsage();
+}
 
 saveRecentChat();
 
 } catch (error) {
-
 console.error(
-  "Chat error:",
-  error
+"Chat error:",
+error
 );
-
 
 addMessage(
   "assistant",
@@ -530,34 +585,30 @@ addMessage(
   }`
 );
 
-
 notify(
   "AI request failed",
   "!"
 );
 
 } finally {
-
 hideThinking();
-
 
 if (sendButton) {
   sendButton.disabled = false;
 }
 
+state.isSending = false;
 
 messageInput?.focus();
 
 }
-
 }
 
-/* =========================
-SAVE RECENT CHAT
-========================= */
+/* =========================================
+RECENT CHATS
+========================================= */
 
 function saveRecentChat() {
-
 const firstUser =
 state.messages.find(
 (message) =>
@@ -569,57 +620,46 @@ if (!firstUser) return;
 const existing =
 state.chats.find(
 (chat) =>
-chat.messages?.[0]?.content ===
-firstUser.content
+chat.id === state.currentChatId
 );
 
 if (existing) {
-
 existing.messages =
-  [...state.messages];
+[...state.messages];
 
 existing.updated =
   Date.now();
 
 } else {
+const newId = Date.now();
+
+state.currentChatId = newId;
 
 state.chats.unshift({
-
-  id:
-    Date.now(),
+  id: newId,
 
   title:
     firstUser.content
-      .slice(0, 40),
+      .slice(0, 50),
 
   messages:
     [...state.messages],
 
   updated:
     Date.now()
-
 });
 
 }
 
 state.chats =
-state.chats.slice(
-0,
-20
-);
+state.chats.slice(0, 20);
 
-saveState();
+saveChats();
 
 renderRecentChats();
-
 }
 
-/* =========================
-RENDER RECENT CHATS
-========================= */
-
 function renderRecentChats() {
-
 const container =
 $("recentChats");
 
@@ -628,9 +668,8 @@ if (!container) return;
 container.innerHTML = "";
 
 if (!state.chats.length) {
-
 const empty =
-  document.createElement("div");
+document.createElement("div");
 
 empty.className =
   "empty-recent";
@@ -638,10 +677,7 @@ empty.className =
 empty.textContent =
   "No recent chats";
 
-
-container.appendChild(
-  empty
-);
+container.appendChild(empty);
 
 return;
 
@@ -649,22 +685,20 @@ return;
 
 state.chats.forEach(
 (chat) => {
+const button =
+document.createElement("button");
 
-  const button =
-    document.createElement("button");
-
-
-  button.type =
-    "button";
-
+  button.type = "button";
 
   button.className =
     "recent-chat-item";
 
-
   button.textContent =
-    chat.title;
+    chat.title ||
+    "New Chat";
 
+  button.title =
+    chat.title;
 
   button.addEventListener(
     "click",
@@ -673,23 +707,13 @@ state.chats.forEach(
     }
   );
 
-
-  container.appendChild(
-    button
-  );
-
+  container.appendChild(button);
 }
 
 );
-
 }
 
-/* =========================
-LOAD CHAT
-========================= */
-
 function loadChat(id) {
-
 const chat =
 state.chats.find(
 (item) =>
@@ -698,8 +722,10 @@ item.id === id
 
 if (!chat) return;
 
+state.currentChatId = id;
+
 state.messages =
-[...chat.messages];
+[...(chat.messages || [])];
 
 if (welcomeScreen) {
 welcomeScreen.hidden = true;
@@ -711,17 +737,12 @@ messagesEl.innerHTML = "";
 
 state.messages.forEach(
 (message) => {
-
-  addMessage(
-    message.role,
-    message.content
-  );
-
-}
-
+addMessage(
+message.role,
+message.content
 );
-
-/* CLOSE MOBILE MENU */
+}
+);
 
 document.body.classList.remove(
 "sidebar-open"
@@ -731,15 +752,32 @@ notify(
 "Chat opened",
 "🕘"
 );
-
 }
 
-/* =========================
+/* =========================================
+CLEAR CHATS
+========================================= */
+
+function clearChats() {
+state.chats = [];
+
+state.currentChatId = null;
+
+saveChats();
+
+renderRecentChats();
+
+notify(
+"Recent chats cleared",
+"🗑️"
+);
+}
+
+/* =========================================
 CHARACTER COUNT
-========================= */
+========================================= */
 
 function updateCharacterCount() {
-
 const counter =
 $("characterCount");
 
@@ -747,31 +785,24 @@ if (
 counter &&
 messageInput
 ) {
-
 counter.textContent =
-  `${messageInput.value.length} / 10000`;
-
+"${messageInput.value.length} / 10000";
+}
 }
 
-}
-
-/* =========================
+/* =========================================
 MODALS
-========================= */
+========================================= */
 
 function openModal(id) {
-
-const modal =
-$(id);
+const modal = $(id);
 
 if (modal) {
 modal.hidden = false;
 }
-
 }
 
 function closeAllModals() {
-
 document
 .querySelectorAll(".modal")
 .forEach(
@@ -779,99 +810,62 @@ document
 modal.hidden = true;
 }
 );
-
 }
 
-/* =========================
-MODAL BUTTONS
-========================= */
-
-document
-.querySelectorAll(
-"[data-close-modal]"
-)
-.forEach(
-(button) => {
-
-  button.addEventListener(
-    "click",
-    closeAllModals
-  );
-
-}
-
-);
-
-/* =========================
+/* =========================================
 HAMBURGER MENU
-========================= */
+========================================= */
 
 $("mobileMenuButton")
 ?.addEventListener(
 "click",
 () => {
-
-  document.body.classList.toggle(
-    "sidebar-open"
-  );
-
+document.body.classList.toggle(
+"sidebar-open"
+);
 }
-
 );
 
 $("desktopMenuButton")
 ?.addEventListener(
 "click",
 () => {
-
-  document.body.classList.toggle(
-    "sidebar-collapsed"
-  );
-
-}
-
+document.body.classList.toggle(
+"sidebar-open"
 );
-
-/* CLOSE SIDEBAR BACKDROP */
+}
+);
 
 sidebarBackdrop
 ?.addEventListener(
 "click",
 () => {
-
-  document.body.classList.remove(
-    "sidebar-open"
-  );
-
+document.body.classList.remove(
+"sidebar-open"
+);
 }
-
 );
 
-/* =========================
-BUTTONS
-========================= */
+/* =========================================
+NEW CHAT BUTTONS
+========================================= */
 
-/* NEW CHAT */
-
-$("newChatButton")
-?.addEventListener(
+[
+"newChatButton",
+"headerNewChat",
+"mobileNewChat"
+].forEach(
+(id) => {
+$(id)?.addEventListener(
 "click",
 newChat
 );
-
-$("headerNewChat")
-?.addEventListener(
-"click",
-newChat
+}
 );
 
-$("mobileNewChat")
-?.addEventListener(
-"click",
-newChat
-);
-
-/* SEND */
+/* =========================================
+SEND BUTTON
+========================================= */
 
 sendButton
 ?.addEventListener(
@@ -881,39 +875,192 @@ sendMessage();
 }
 );
 
-/* LOGIN */
+/* =========================================
+ENTER TO SEND
+========================================= */
+
+messageInput
+?.addEventListener(
+"keydown",
+(event) => {
+if (
+event.key === "Enter" &&
+!event.shiftKey
+) {
+event.preventDefault();
+
+    sendMessage();
+  }
+}
+
+);
+
+messageInput
+?.addEventListener(
+"input",
+updateCharacterCount
+);
+
+/* =========================================
+QUICK ACTIONS
+========================================= */
+
+document
+.querySelectorAll(
+".quick-action[data-prompt]"
+)
+.forEach(
+(button) => {
+button.addEventListener(
+"click",
+() => {
+const prompt =
+button.dataset.prompt;
+
+      if (prompt) {
+        sendMessage(prompt);
+      }
+    }
+  );
+}
+
+);
+
+/* =========================================
+LOGIN
+========================================= */
 
 $("loginButton")
 ?.addEventListener(
 "click",
 () => {
-openModal(
-"loginModal"
-);
+openModal("loginModal");
 }
 );
 
-/* SIGNUP */
+$("loginForm")
+?.addEventListener(
+"submit",
+(event) => {
+event.preventDefault();
+
+  const email =
+    $("loginEmail")
+      ?.value
+      .trim();
+
+  if (!email) return;
+
+  /*
+    This is only local browser data.
+    It is not a secure login system.
+  */
+
+  localStorage.setItem(
+    STORAGE_KEYS.user,
+    JSON.stringify({
+      email
+    })
+  );
+
+  closeAllModals();
+
+  notify(
+    "Login saved on this device",
+    "✓"
+  );
+}
+
+);
+
+/* =========================================
+CREATE ACCOUNT
+========================================= */
 
 $("signupButton")
 ?.addEventListener(
 "click",
 () => {
-openModal(
-"signupModal"
-);
+openModal("signupModal");
 }
 );
 
-/* SETTINGS */
+$("signupForm")
+?.addEventListener(
+"submit",
+(event) => {
+event.preventDefault();
+
+  const name =
+    $("signupName")
+      ?.value
+      .trim();
+
+  const email =
+    $("signupEmail")
+      ?.value
+      .trim();
+
+  if (!name || !email) return;
+
+  /*
+    Demo only.
+    Real accounts require a backend.
+  */
+
+  localStorage.setItem(
+    STORAGE_KEYS.user,
+    JSON.stringify({
+      name,
+      email
+    })
+  );
+
+  closeAllModals();
+
+  notify(
+    "Account created on this device",
+    "✓"
+  );
+}
+
+);
+
+/* =========================================
+LOGIN / SIGNUP SWITCH
+========================================= */
+
+$("openSignupFromLogin")
+?.addEventListener(
+"click",
+() => {
+closeAllModals();
+
+  openModal("signupModal");
+}
+
+);
+
+$("openLoginFromSignup")
+?.addEventListener(
+"click",
+() => {
+closeAllModals();
+
+  openModal("loginModal");
+}
+
+);
+
+/* =========================================
+SETTINGS
+========================================= */
 
 $("settingsButton")
 ?.addEventListener(
 "click",
 () => {
-openModal(
-"settingsModal"
-);
+openModal("settingsModal");
 }
 );
 
@@ -921,74 +1068,135 @@ $("headerSettings")
 ?.addEventListener(
 "click",
 () => {
-openModal(
-"settingsModal"
-);
+openModal("settingsModal");
 }
 );
 
-/* UPGRADE */
+function applySettings() {
+const darkEnabled =
+localStorage.getItem(
+STORAGE_KEYS.dark
+) === "true";
 
-$("upgradeButton")
-?.addEventListener(
-"click",
-() => {
-openModal(
-"upgradeModal"
+const largeEnabled =
+localStorage.getItem(
+STORAGE_KEYS.large
+) === "true";
+
+const fontSize =
+localStorage.getItem(
+STORAGE_KEYS.font
+) || "16";
+
+document.body.classList.toggle(
+"dark-mode",
+darkEnabled
 );
+
+document.body.classList.toggle(
+"large-answer-text",
+largeEnabled
+);
+
+document.documentElement.style.setProperty(
+"--answer-font-size",
+"${fontSize}px"
+);
+
+const darkToggle =
+$("darkModeToggle");
+
+const largeToggle =
+$("largeTextToggle");
+
+const fontSelect =
+$("fontSizeSelect");
+
+if (darkToggle) {
+darkToggle.checked =
+darkEnabled;
 }
-);
 
-/* LOGIN TO SIGNUP */
+if (largeToggle) {
+largeToggle.checked =
+largeEnabled;
+}
 
-$("openSignupFromLogin")
+if (fontSelect) {
+fontSelect.value =
+fontSize;
+}
+}
+
+/* DARK MODE */
+
+$("darkModeToggle")
 ?.addEventListener(
-"click",
-() => {
+"change",
+(event) => {
+const enabled =
+event.target.checked;
 
-  closeAllModals();
-
-  openModal(
-    "signupModal"
+  localStorage.setItem(
+    STORAGE_KEYS.dark,
+    String(enabled)
   );
 
+  document.body.classList.toggle(
+    "dark-mode",
+    enabled
+  );
 }
 
 );
 
-/* SIGNUP TO LOGIN */
+/* LARGE TEXT */
 
-$("openLoginFromSignup")
+$("largeTextToggle")
 ?.addEventListener(
-"click",
-() => {
+"change",
+(event) => {
+const enabled =
+event.target.checked;
 
-  closeAllModals();
-
-  openModal(
-    "loginModal"
+  localStorage.setItem(
+    STORAGE_KEYS.large,
+    String(enabled)
   );
 
+  document.body.classList.toggle(
+    "large-answer-text",
+    enabled
+  );
 }
 
 );
 
-/* CLEAR CHATS */
+/* FONT SIZE */
 
-function clearChats() {
+$("fontSizeSelect")
+?.addEventListener(
+"change",
+(event) => {
+const size =
+event.target.value;
 
-state.chats = [];
+  localStorage.setItem(
+    STORAGE_KEYS.font,
+    size
+  );
 
-saveState();
+  document.documentElement.style.setProperty(
+    "--answer-font-size",
+    `${size}px`
+  );
+}
 
-renderRecentChats();
-
-notify(
-"Recent chats cleared",
-"🗑️"
 );
 
-}
+/* =========================================
+CLEAR CHAT BUTTONS
+========================================= */
 
 $("clearChatsButton")
 ?.addEventListener(
@@ -1002,103 +1210,9 @@ $("clearChatsButtonSettings")
 clearChats
 );
 
-/* =========================
-LOGIN
-========================= */
-
-$("loginForm")
-?.addEventListener(
-"submit",
-(event) => {
-
-  event.preventDefault();
-
-
-  const email =
-    $("loginEmail")
-      ?.value
-      .trim();
-
-
-  if (!email) return;
-
-
-  localStorage.setItem(
-    "jddhm_user",
-    JSON.stringify({
-      email
-    })
-  );
-
-
-  closeAllModals();
-
-
-  notify(
-    "Login saved on this device",
-    "✓"
-  );
-
-}
-
-);
-
-/* =========================
-SIGNUP
-========================= */
-
-$("signupForm")
-?.addEventListener(
-"submit",
-(event) => {
-
-  event.preventDefault();
-
-
-  const name =
-    $("signupName")
-      ?.value
-      .trim();
-
-
-  const email =
-    $("signupEmail")
-      ?.value
-      .trim();
-
-
-  if (
-    !name ||
-    !email
-  ) {
-    return;
-  }
-
-
-  localStorage.setItem(
-    "jddhm_user",
-    JSON.stringify({
-      name,
-      email
-    })
-  );
-
-
-  closeAllModals();
-
-
-  notify(
-    "Account created on this device",
-    "✓"
-  );
-
-}
-
-);
-
-/* =========================
+/* =========================================
 FILE UPLOAD
-========================= */
+========================================= */
 
 $("attachButton")
 ?.addEventListener(
@@ -1112,26 +1226,20 @@ $("removeFileButton")
 ?.addEventListener(
 "click",
 () => {
-
-  state.attachedFile =
-    null;
-
+state.attachedFile = null;
 
   if (fileInput) {
     fileInput.value = "";
   }
 
-
   if (filePreview) {
     filePreview.hidden = true;
   }
-
 
   notify(
     "File removed",
     "×"
   );
-
 }
 
 );
@@ -1140,337 +1248,216 @@ fileInput
 ?.addEventListener(
 "change",
 async () => {
-
-  const file =
-    fileInput.files?.[0];
-
+const file =
+fileInput.files?.[0];
 
   if (!file) return;
-
 
   state.attachedFile =
     file;
 
-
   const fileName =
     $("fileName");
 
-
   const fileSize =
     $("fileSize");
-
 
   if (fileName) {
     fileName.textContent =
       file.name;
   }
 
-
   if (fileSize) {
+    const sizeInKB =
+      Math.max(
+        1,
+        Math.round(
+          file.size / 1024
+        )
+      );
 
     fileSize.textContent =
-      `${Math.round(
-        file.size / 1024
-      )} KB`;
-
+      `${sizeInKB} KB`;
   }
-
 
   if (filePreview) {
     filePreview.hidden = false;
   }
 
-
   const isTextFile =
     file.type.startsWith(
       "text/"
     ) ||
-    file.name.endsWith(
-      ".json"
-    ) ||
-    file.name.endsWith(
-      ".csv"
-    ) ||
-    file.name.endsWith(
-      ".js"
-    ) ||
-    file.name.endsWith(
-      ".html"
-    ) ||
-    file.name.endsWith(
-      ".css"
+    /\.(txt|json|csv|js|html|css|md)$/i.test(
+      file.name
     );
 
-
   if (isTextFile) {
-
     try {
-
       const fileText =
         await file.text();
 
-
       if (messageInput) {
+        const maxText =
+          8000;
 
         messageInput.value =
           `Please analyze this file:\n\n${fileText.slice(
             0,
-            50000
+            maxText
           )}`;
 
-
         updateCharacterCount();
-
       }
 
-
       notify(
-        "File loaded",
+        "File loaded into the message",
         "📎"
       );
 
     } catch {
-
       notify(
-        "Could not read the file",
+        "Could not read this file",
         "!"
       );
-
     }
 
   } else {
-
     notify(
-      "File attached. Text extraction works with text, JSON, CSV, HTML, CSS and JavaScript files.",
+      "File attached. Text files are supported for automatic reading.",
       "📎"
     );
-
   }
-
 }
 
 );
 
-/* =========================
-QUICK ACTIONS
-========================= */
+/* =========================================
+UPGRADE
+========================================= */
+
+$("upgradeButton")
+?.addEventListener(
+"click",
+() => {
+openModal("upgradeModal");
+}
+);
+
+/*
+The original HTML does not yet contain
+an access-code input.
+
+This function will work automatically
+after the code input is added to the
+upgrade modal.
+*/
+
+function checkAccessCode() {
+const codeInput =
+$("accessCodeInput");
+
+const codeButton =
+$("accessCodeButton");
+
+if (!codeInput || !codeButton) {
+return;
+}
+
+codeButton.addEventListener(
+"click",
+() => {
+const enteredCode =
+codeInput.value.trim();
+
+  if (
+    enteredCode === ACCESS_CODE
+  ) {
+    state.hasAccess = true;
+
+    saveAccess();
+
+    updateUsage();
+
+    closeAllModals();
+
+    codeInput.value = "";
+
+    notify(
+      "Access code accepted. You can continue!",
+      "✓"
+    );
+
+  } else {
+    notify(
+      "Invalid access code.",
+      "!"
+    );
+  }
+}
+
+);
+}
+
+/* =========================================
+MODAL CLOSE BUTTONS
+========================================= */
 
 document
 .querySelectorAll(
-".quick-action[data-prompt]"
+"[data-close-modal]"
 )
 .forEach(
 (button) => {
-
-  button.addEventListener(
-    "click",
-    () => {
-
-      const prompt =
-        button.dataset.prompt;
-
-
-      if (prompt) {
-
-        sendMessage(
-          prompt
-        );
-
-      }
-
-    }
-  );
-
+button.addEventListener(
+"click",
+closeAllModals
+);
 }
-
 );
 
-/* =========================
-SETTINGS
-========================= */
+/* CLOSE MODAL WHEN CLICKING OUTSIDE */
 
-function applySettings() {
-
-const savedDark =
-localStorage.getItem(
-"jddhm_dark"
-) === "true";
-
-const savedLarge =
-localStorage.getItem(
-"jddhm_large"
-) === "true";
-
-const savedFont =
-localStorage.getItem(
-"jddhm_font"
-) || "16";
-
-document.body.classList.toggle(
-"dark-mode",
-savedDark
-);
-
-document.body.classList.toggle(
-"large-answer-text",
-savedLarge
-);
-
-document.documentElement.style.setProperty(
-"--answer-font-size",
-"${savedFont}px"
-);
-
-if ($("darkModeToggle")) {
-
-$("darkModeToggle").checked =
-  savedDark;
-
-}
-
-if ($("largeTextToggle")) {
-
-$("largeTextToggle").checked =
-  savedLarge;
-
-}
-
-if ($("fontSizeSelect")) {
-
-$("fontSizeSelect").value =
-  savedFont;
-
-}
-
-}
-
-$("darkModeToggle")
-?.addEventListener(
-"change",
+document
+.querySelectorAll(".modal")
+.forEach(
+(modal) => {
+modal.addEventListener(
+"click",
 (event) => {
-
-  const enabled =
-    event.target.checked;
-
-
-  localStorage.setItem(
-    "jddhm_dark",
-    enabled
-  );
-
-
-  document.body.classList.toggle(
-    "dark-mode",
-    enabled
-  );
-
+if (
+event.target === modal
+) {
+modal.hidden = true;
 }
-
-);
-
-$("largeTextToggle")
-?.addEventListener(
-"change",
-(event) => {
-
-  const enabled =
-    event.target.checked;
-
-
-  localStorage.setItem(
-    "jddhm_large",
-    enabled
-  );
-
-
-  document.body.classList.toggle(
-    "large-answer-text",
-    enabled
-  );
-
 }
-
 );
-
-$("fontSizeSelect")
-?.addEventListener(
-"change",
-(event) => {
-
-  const size =
-    event.target.value;
-
-
-  localStorage.setItem(
-    "jddhm_font",
-    size
-  );
-
-
-  document.documentElement.style.setProperty(
-    "--answer-font-size",
-    `${size}px`
-  );
-
 }
-
 );
 
-/* =========================
-ENTER TO SEND
-========================= */
-
-messageInput
-?.addEventListener(
-"keydown",
-(event) => {
-
-  if (
-    event.key === "Enter" &&
-    !event.shiftKey
-  ) {
-
-    event.preventDefault();
-
-    sendMessage();
-
-  }
-
-}
-
-);
-
-messageInput
-?.addEventListener(
-"input",
-updateCharacterCount
-);
-
-/* =========================
-CLOSE NOTIFICATION
-========================= */
+/* =========================================
+NOTIFICATION CLOSE
+========================================= */
 
 $("notificationClose")
 ?.addEventListener(
 "click",
 () => {
-
-  const notification =
-    $("notification");
-
+const notification =
+$("notification");
 
   if (notification) {
     notification.hidden = true;
   }
-
 }
 
 );
 
-/* =========================
-STARTUP
-========================= */
+/* =========================================
+START APPLICATION
+========================================= */
 
+function startApp() {
 updateUsage();
 
 updateCharacterCount();
@@ -1479,21 +1466,27 @@ renderRecentChats();
 
 applySettings();
 
-window.addEventListener(
-"load",
-() => {
+checkAccessCode();
 
 setTimeout(
-  () => {
-
-    notify(
-      "Welcome to JDDHM Product of AI — AI Chatbot",
-      "🤖"
-    );
-
-  },
-  500
+() => {
+notify(
+"Welcome to JDDHM Product of AI — AI Chatbot",
+"🤖"
 );
-
+},
+600
+);
 }
+
+if (
+document.readyState ===
+"loading"
+) {
+document.addEventListener(
+"DOMContentLoaded",
+startApp
 );
+} else {
+startApp();
+}
