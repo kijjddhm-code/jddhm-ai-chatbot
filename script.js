@@ -79,13 +79,13 @@ const count = $("usageCount");
 const progress = $("usageProgress");
 
 if (count) {
-count.textContent = "${state.usage} / 20";
+count.textContent = "${state.usage} / 1000";
 }
 
 if (progress) {
 const percentage =
 Math.min(
-(state.usage / 20) * 100,
+(state.usage / 1000) * 100,
 100
 );
 
