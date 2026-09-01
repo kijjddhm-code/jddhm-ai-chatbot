@@ -21,16 +21,11 @@ content="JDDHM Product of AI - AI Chatbot"
   <link
     rel="manifest"
     href="/manifest.json"
-  >  <title>JDDHM Product of AI</title>  <link
+  >  <title>AI Chatbot</title>  <link
     rel="stylesheet"
     href="/style.css"
   >
-</head><body>  <!-- =========================
-       APP
-  ========================== -->  <div id="app"><!-- =========================
-     MOBILE HEADER
-========================== -->
-
+</head><body>  <div id="app"><!-- MOBILE HEADER -->
 <header class="mobile-header">
 
   <button
@@ -43,7 +38,8 @@ content="JDDHM Product of AI - AI Chatbot"
   </button>
 
   <div class="mobile-brand">
-    <strong>🤖 AI Chatbot</strong>
+    🤖
+    <strong>AI Chatbot</strong>
   </div>
 
   <button
@@ -58,27 +54,11 @@ content="JDDHM Product of AI - AI Chatbot"
 </header>
 
 
-<!-- =========================
-     SIDEBAR BACKDROP
-========================== -->
-
-<div
-  id="sidebarBackdrop"
-  class="sidebar-backdrop"
-></div>
-
-
-<!-- =========================
-     SIDEBAR
-========================== -->
-
+<!-- SIDEBAR -->
 <aside
   id="sidebar"
   class="sidebar"
 >
-
-
-  <!-- SIDEBAR TOP -->
 
   <div class="sidebar-top">
 
@@ -88,22 +68,16 @@ content="JDDHM Product of AI - AI Chatbot"
         🤖
       </div>
 
-      <div class="brand-text">
-
-        <strong>
-          AI Chatbot
-        </strong>
+      <div>
+        <strong>AI Chatbot</strong>
 
         <span>
           JDDHM Product of AI
         </span>
-
       </div>
 
     </div>
 
-
-    <!-- NEW CHAT -->
 
     <button
       id="newChatButton"
@@ -111,90 +85,82 @@ content="JDDHM Product of AI - AI Chatbot"
       type="button"
     >
       <span>＋</span>
-      <span>New Chat</span>
+      New Chat
     </button>
 
 
-    <!-- NAVIGATION -->
-
-    <nav class="sidebar-nav">
+    <nav
+      class="sidebar-nav"
+      aria-label="Main navigation"
+    >
 
       <button
+        id="homeButton"
         class="nav-button active"
         type="button"
       >
-        <span>⌂</span>
+        ⌂
         <span>Home</span>
       </button>
 
-
       <button
+        id="recentChatsButton"
         class="nav-button"
         type="button"
       >
-        <span>🕘</span>
+        🕘
         <span>Recent Chats</span>
       </button>
-
 
       <button
         id="settingsButton"
         class="nav-button"
         type="button"
       >
-        <span>⚙️</span>
+        ⚙️
         <span>Settings</span>
       </button>
 
     </nav>
 
-
-    <!-- RECENT CHATS -->
-
-    <div class="recent-section">
-
-      <div class="section-title-row">
-
-        <h2>
-          RECENT CHATS
-        </h2>
-
-        <button
-          id="clearChatsButton"
-          class="clear-chats-button"
-          type="button"
-          title="Clear chats"
-        >
-          🗑️
-        </button>
-
-      </div>
+  </div>
 
 
-      <div
-        id="recentChats"
-        class="recent-chats"
+  <!-- RECENT CHATS -->
+  <div class="recent-section">
+
+    <div class="recent-header">
+
+      <h2>
+        RECENT CHATS
+      </h2>
+
+      <button
+        id="clearChatsButton"
+        class="clear-chats-button"
+        type="button"
+        aria-label="Clear recent chats"
       >
+        🗑️
+      </button>
 
-        <div class="empty-recent">
-          No recent chats
-        </div>
+    </div>
 
+
+    <div
+      id="recentChats"
+      class="recent-chats"
+    >
+      <div class="empty-recent">
+        No recent chats
       </div>
-
     </div>
 
   </div>
 
 
-  <!-- =========================
-       SIDEBAR BOTTOM
-  ========================== -->
-
+  <!-- SIDEBAR BOTTOM -->
   <div class="sidebar-bottom">
-
-
-    <!-- USAGE -->
 
     <div
       id="usageBox"
@@ -204,7 +170,7 @@ content="JDDHM Product of AI - AI Chatbot"
       <div class="usage-header">
 
         <span>
-          Free usage
+          Total usage
         </span>
 
         <strong id="usageCount">
@@ -226,25 +192,26 @@ content="JDDHM Product of AI - AI Chatbot"
 
 
       <p>
-        1000 free messages available.
+        1000 total free searches available.
       </p>
 
     </div>
 
-
-    <!-- UPGRADE -->
 
     <button
       id="upgradeButton"
       class="upgrade-button"
       type="button"
     >
-      <span>⭐</span>
-      <span> Upgrade you need call<0798990112></span>
+      ⭐ Upgrade
     </button>
 
 
-    <!-- ACCOUNT -->
+    <p class="payment-help">
+      Need access? Call
+      <strong>0798990112</strong>
+    </p>
+
 
     <div
       id="accountArea"
@@ -275,14 +242,8 @@ content="JDDHM Product of AI - AI Chatbot"
 </aside>
 
 
-<!-- =========================
-     MAIN
-========================== -->
-
+<!-- MAIN CONTENT -->
 <main class="main">
-
-
-  <!-- DESKTOP HEADER -->
 
   <header class="top-header">
 
@@ -301,7 +262,7 @@ content="JDDHM Product of AI - AI Chatbot"
       <div>
 
         <h1>
-          AI Chatbot
+          🤖 AI Chatbot
         </h1>
 
         <span
@@ -331,7 +292,7 @@ content="JDDHM Product of AI - AI Chatbot"
         id="headerSettings"
         class="icon-button"
         type="button"
-        aria-label="Settings"
+        aria-label="Open settings"
       >
         ⚙️
       </button>
@@ -341,18 +302,13 @@ content="JDDHM Product of AI - AI Chatbot"
   </header>
 
 
-  <!-- =========================
-       CHAT AREA
-  ========================== -->
-
+  <!-- CHAT AREA -->
   <section
     id="chatArea"
     class="chat-area"
   >
 
-
     <!-- WELCOME SCREEN -->
-
     <div
       id="welcomeScreen"
       class="welcome-screen"
@@ -362,44 +318,37 @@ content="JDDHM Product of AI - AI Chatbot"
         🤖
       </div>
 
-
       <h2>
         Welcome to JDDHM Product of AI
       </h2>
-
 
       <h3>
         AI Chatbot
       </h3>
 
-
       <p>
-        Ask questions, get help, upload files and explore ideas with AI.
+        Ask questions, get help, upload files
+        and explore ideas with AI.
       </p>
 
 
-      <!-- QUICK ACTIONS -->
-
       <div class="quick-actions">
-
 
         <button
           class="quick-action"
           type="button"
-          data-prompt="Explain something to me in a simple way."
+          data-prompt="Explain something to me in simple words."
         >
           💡 Explain something
         </button>
 
-
         <button
           class="quick-action"
           type="button"
-          data-prompt="Help me write something professional."
+          data-prompt="Help me write something."
         >
           ✍️ Help me write
         </button>
-
 
         <button
           class="quick-action"
@@ -409,60 +358,44 @@ content="JDDHM Product of AI - AI Chatbot"
           💭 Give me ideas
         </button>
 
-
       </div>
 
     </div>
 
 
-    <!-- =========================
-         MESSAGES
-    ========================== -->
-
+    <!-- MESSAGES -->
     <div
       id="messages"
       class="messages"
+      aria-live="polite"
     ></div>
 
 
-    <!-- TYPING INDICATOR -->
-
+    <!-- THINKING -->
     <div
       id="typingIndicator"
       class="typing-indicator"
       hidden
+      role="status"
     >
-
       <div class="typing-avatar">
         🤖
       </div>
 
-
       <div class="typing-content">
-
-        <span>
-          AI is thinking
+        AI is thinking
+        <span class="typing-dots">
+          <span></span>
+          <span></span>
+          <span></span>
         </span>
-
-        <div class="typing-dots">
-
-          <i></i>
-          <i></i>
-          <i></i>
-
-        </div>
-
       </div>
-
     </div>
 
   </section>
 
 
-  <!-- =========================
-       FILE PREVIEW
-  ========================== -->
-
+  <!-- FILE PREVIEW -->
   <div
     id="filePreview"
     class="file-preview"
@@ -471,17 +404,15 @@ content="JDDHM Product of AI - AI Chatbot"
 
     <div class="file-preview-info">
 
-      <span class="file-icon">
+      <span>
         📎
       </span>
-
 
       <div>
 
         <strong id="fileName">
           File
         </strong>
-
 
         <span id="fileSize">
           0 KB
@@ -504,28 +435,14 @@ content="JDDHM Product of AI - AI Chatbot"
   </div>
 
 
-  <!-- =========================
-       CHAT COMPOSER
-  ========================== -->
-
+  <!-- MESSAGE COMPOSER -->
   <div class="composer-area">
-
-
-    <input
-      id="fileInput"
-      type="file"
-      hidden
-    >
-
 
     <div class="composer">
 
-
-      <!-- ATTACH -->
-
       <button
         id="attachButton"
-        class="attach-button"
+        class="composer-icon-button"
         type="button"
         aria-label="Attach file"
       >
@@ -533,18 +450,21 @@ content="JDDHM Product of AI - AI Chatbot"
       </button>
 
 
-      <!-- MESSAGE INPUT -->
+      <input
+        id="fileInput"
+        type="file"
+        hidden
+      >
+
 
       <textarea
         id="messageInput"
-        class="message-input"
-        placeholder="Ask anything..."
         rows="1"
         maxlength="10000"
+        placeholder="Message AI Chatbot..."
+        aria-label="Message AI Chatbot"
       ></textarea>
 
-
-      <!-- SEND -->
 
       <button
         id="sendButton"
@@ -564,7 +484,6 @@ content="JDDHM Product of AI - AI Chatbot"
         AI can make mistakes. Check important information.
       </span>
 
-
       <span id="characterCount">
         0 / 10000
       </span>
@@ -575,12 +494,11 @@ content="JDDHM Product of AI - AI Chatbot"
 
 </main>
 
-  </div>  <!-- =========================
-       NOTIFICATION
-  ========================== -->  <div
+  </div>  <!-- NOTIFICATION -->  <div
     id="notification"
     class="notification"
     hidden
+    role="status"
   ><span
   id="notificationIcon"
   class="notification-icon"
@@ -588,11 +506,9 @@ content="JDDHM Product of AI - AI Chatbot"
   ✓
 </span>
 
-
-<span id="notificationMessage">
-  Notification
-</span>
-
+<span
+  id="notificationMessage"
+></span>
 
 <button
   id="notificationClose"
@@ -602,33 +518,259 @@ content="JDDHM Product of AI - AI Chatbot"
   ×
 </button>
 
-  </div>  <!-- =========================
-       LOGIN MODAL
-  ========================== -->  <div
-    id="loginModal"
-    class="modal"
+  </div>  <!-- ACCESS CODE MODAL -->  <div
+    id="accessCodeModal"
+    class="access-code-modal"
     hidden
-  ><div class="modal-box">
+  ><div
+  class="access-code-box"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="accessCodeTitle"
+>
+
+  <div class="access-code-icon">
+    🔒
+  </div>
+
+  <h2 id="accessCodeTitle">
+    Continue Using AI
+  </h2>
+
+  <p>
+    Enter your access code to continue.
+  </p>
+
+
+  <input
+    id="accessCodeInput"
+    type="password"
+    inputmode="numeric"
+    placeholder="Enter access code"
+    autocomplete="off"
+  >
+
+
+  <p
+    id="accessCodeError"
+    class="access-code-error"
+    hidden
+  ></p>
 
 
   <button
-    class="modal-close"
+    id="accessCodeButton"
+    class="access-code-button"
     type="button"
+  >
+    Continue
+  </button>
+
+
+  <p class="access-code-help">
+    Need access? Call
+    <strong>0798990112</strong>
+  </p>
+
+</div>
+
+  </div>  <!-- UPGRADE MODAL -->  <div
+    id="upgradeModal"
+    class="modal"
+    hidden
+  ><div
+  class="modal-box upgrade-modal-box"
+  role="dialog"
+  aria-modal="true"
+>
+
+  <button
+    class="modal-close"
     data-close-modal
+    type="button"
+    aria-label="Close"
+  >
+    ×
+  </button>
+
+  <div class="modal-icon">
+    ⭐
+  </div>
+
+  <h2>
+    Upgrade Required
+  </h2>
+
+  <p>
+    This chat has reached its search limit.
+    Upgrade to continue immediately or start
+    a new chat with a different topic.
+  </p>
+
+  <div class="payment-info">
+    <strong>
+      Payment: 500 RWF
+    </strong>
+
+    <span>
+      Mobile Money: 0798990112
+    </span>
+  </div>
+
+  <button
+    id="openAccessCodeButton"
+    class="modal-primary-button"
+    type="button"
+  >
+    I Have an Access Code
+  </button>
+
+</div>
+
+  </div>  <!-- SETTINGS MODAL -->  <div
+    id="settingsModal"
+    class="modal"
+    hidden
+  ><div
+  class="modal-box settings-modal-box"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="settingsTitle"
+>
+
+  <button
+    class="modal-close"
+    data-close-modal
+    type="button"
+    aria-label="Close settings"
   >
     ×
   </button>
 
 
-  <h2>
-    Login
+  <h2 id="settingsTitle">
+    ⚙️ Settings
   </h2>
 
 
-  <p>
-    Login to JDDHM Product of AI.
-  </p>
+  <div class="setting-row">
 
+    <div>
+
+      <strong>
+        Dark mode
+      </strong>
+
+      <p>
+        Change the appearance.
+      </p>
+
+    </div>
+
+    <label class="switch">
+
+      <input
+        id="darkModeToggle"
+        type="checkbox"
+      >
+
+      <span class="switch-slider"></span>
+
+    </label>
+
+  </div>
+
+
+  <div class="setting-row">
+
+    <div>
+
+      <strong>
+        Large answer text
+      </strong>
+
+      <p>
+        Make AI answers easier to read.
+      </p>
+
+    </div>
+
+    <label class="switch">
+
+      <input
+        id="largeTextToggle"
+        type="checkbox"
+      >
+
+      <span class="switch-slider"></span>
+
+    </label>
+
+  </div>
+
+
+  <div class="setting-column">
+
+    <label
+      for="fontSizeSelect"
+    >
+      <strong>
+        Answer font size
+      </strong>
+    </label>
+
+    <select id="fontSizeSelect">
+      <option value="14">
+        Small
+      </option>
+
+      <option value="16">
+        Normal
+      </option>
+
+      <option value="20">
+        Large
+      </option>
+
+      <option value="24">
+        Extra Large
+      </option>
+    </select>
+
+  </div>
+
+
+  <button
+    id="clearChatsButtonSettings"
+    class="clear-settings-button"
+    type="button"
+  >
+    🗑️ Clear Recent Chats
+  </button>
+
+</div>
+
+  </div>  <!-- LOGIN MODAL -->  <div
+    id="loginModal"
+    class="modal"
+    hidden
+  ><div
+  class="modal-box"
+  role="dialog"
+  aria-modal="true"
+>
+
+  <button
+    class="modal-close"
+    data-close-modal
+    type="button"
+  >
+    ×
+  </button>
+
+  <h2>
+    Login
+  </h2>
 
   <form id="loginForm">
 
@@ -636,14 +778,12 @@ content="JDDHM Product of AI - AI Chatbot"
       Email
     </label>
 
-
     <input
       id="loginEmail"
       type="email"
-      placeholder="you@example.com"
       required
+      placeholder="you@example.com"
     >
-
 
     <button
       class="modal-primary-button"
@@ -654,9 +794,7 @@ content="JDDHM Product of AI - AI Chatbot"
 
   </form>
 
-
-  <p class="modal-switch">
-
+  <p class="modal-switch-text">
     Don't have an account?
 
     <button
@@ -665,47 +803,43 @@ content="JDDHM Product of AI - AI Chatbot"
     >
       Create Account
     </button>
-
   </p>
 
 </div>
 
-  </div>  <!-- =========================
-       SIGNUP MODAL
-  ========================== -->  <div
+  </div>  <!-- SIGNUP MODAL -->  <div
     id="signupModal"
     class="modal"
     hidden
-  ><div class="modal-box">
-
+  ><div
+  class="modal-box"
+  role="dialog"
+  aria-modal="true"
+>
 
   <button
     class="modal-close"
-    type="button"
     data-close-modal
+    type="button"
   >
     ×
   </button>
-
 
   <h2>
     Create Account
   </h2>
 
-
   <form id="signupForm">
-
 
     <label for="signupName">
       Name
     </label>
 
-
     <input
       id="signupName"
       type="text"
-      placeholder="Your name"
       required
+      placeholder="Your name"
     >
 
 
@@ -713,12 +847,11 @@ content="JDDHM Product of AI - AI Chatbot"
       Email
     </label>
 
-
     <input
       id="signupEmail"
       type="email"
-      placeholder="you@example.com"
       required
+      placeholder="you@example.com"
     >
 
 
@@ -732,7 +865,7 @@ content="JDDHM Product of AI - AI Chatbot"
   </form>
 
 
-  <p class="modal-switch">
+  <p class="modal-switch-text">
 
     Already have an account?
 
@@ -747,236 +880,5 @@ content="JDDHM Product of AI - AI Chatbot"
 
 </div>
 
-  </div>  <!-- =========================
-       SETTINGS MODAL
-  ========================== -->  <div
-    id="settingsModal"
-    class="modal"
-    hidden
-  ><div class="modal-box settings-box">
-
-
-  <button
-    class="modal-close"
-    type="button"
-    data-close-modal
-  >
-    ×
-  </button>
-
-
-  <h2>
-    Settings
-  </h2>
-
-
-  <!-- DARK MODE -->
-
-  <div class="setting-row">
-
-    <div>
-
-      <strong>
-        Dark mode
-      </strong>
-
-      <span>
-        Change the appearance.
-      </span>
-
-    </div>
-
-
-    <label class="switch">
-
-      <input
-        id="darkModeToggle"
-        type="checkbox"
-      >
-
-      <span class="slider"></span>
-
-    </label>
-
-  </div>
-
-
-  <!-- LARGE TEXT -->
-
-  <div class="setting-row">
-
-    <div>
-
-      <strong>
-        Large answer text
-      </strong>
-
-      <span>
-        Make AI answers easier to read.
-      </span>
-
-    </div>
-
-
-    <label class="switch">
-
-      <input
-        id="largeTextToggle"
-        type="checkbox"
-      >
-
-      <span class="slider"></span>
-
-    </label>
-
-  </div>
-
-
-  <!-- FONT SIZE -->
-
-  <div class="setting-row">
-
-    <div>
-
-      <strong>
-        Answer font size
-      </strong>
-
-    </div>
-
-
-    <select id="fontSizeSelect">
-
-      <option value="14">
-        Small
-      </option>
-
-      <option value="16">
-        Normal
-      </option>
-
-      <option value="18">
-        Large
-      </option>
-
-      <option value="20">
-        Extra Large
-      </option>
-
-    </select>
-
-  </div>
-
-
-  <!-- CLEAR CHATS -->
-
-  <button
-    id="clearChatsButtonSettings"
-    class="danger-button"
-    type="button"
-  >
-    🗑️ Clear Recent Chats
-  </button>
-
-</div>
-
-  </div>  <!-- =========================
-       UPGRADE MODAL
-  ========================== -->  <div
-    id="upgradeModal"
-    class="modal"
-    hidden
-  ><div class="modal-box">
-
-
-  <button
-    class="modal-close"
-    type="button"
-    data-close-modal
-  >
-    ×
-  </button>
-
-
-  <div class="upgrade-modal-icon">
-    ⭐
-  </div>
-
-
-  <h2>
-    Upgrade
-  </h2>
-
-
-  <p>
-    You have reached the free usage limit.
-  </p>
-
-
-  <button
-    class="modal-primary-button"
-    type="button"
-    data-close-modal
-  >
-    Continue
-  </button>
-
-</div>
-<!-- ACCESS CODE MODAL --><div
-  id="accessCodeModal"
-  class="access-code-modal"
-  hidden
->
-  <div
-    class="access-code-box"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="accessCodeTitle"
-  ><div class="access-code-icon">
-  🔒
-</div>
-
-<h2 id="accessCodeTitle">
-  Continue Using AI
-</h2>
-
-<p>
-  Enter your access code to continue using
-  JDDHM Product of AI.
-</p>
-
-<input
-  id="accessCodeInput"
-  type="password"
-  inputmode="numeric"
-  placeholder="Enter access code"
-  autocomplete="off"
->
-
-<p
-  id="accessCodeError"
-  class="access-code-error"
-  hidden
-></p>
-
-<button
-  id="accessCodeButton"
-  class="access-code-button"
-  type="button"
->
-  Continue
-</button>
-
-<p class="access-code-help">
-  Need access? Contact the administrator.
-</p>
-
-  </div>
-</div>
-  </div>  <!-- =========================
-       LOAD JAVASCRIPT
-  ========================== -->  <script
-    src="/script.js"
-    defer
-  ></script></body>
+  </div>  <script src="/script.js"></script></body>
 </html>
