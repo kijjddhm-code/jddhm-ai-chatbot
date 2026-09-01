@@ -7,6 +7,49 @@ usage: Number(
 localStorage.getItem("jddhm_usage") || 0
 ),
 attachedFile: null
+const ACCESS_CODE = "777";
+function askForAccessCode() {
+  const code = prompt(
+    "Enter your access code to continue:"
+  );
+
+  if (code === null) {
+    return false;
+  }
+
+  if (code.trim() === ACCESS_CODE) {
+    localStorage.setItem(
+      "jddhm_access_granted",
+      "true"
+    );
+
+    notify(
+      "Access code accepted. You can continue.",
+      "✓"
+    );
+
+    return true;
+  }
+
+  notify(
+    "Incorrect access code.",
+    "⚠️"
+  );
+
+  return false;
+}
+aconst hasAccess =
+  localStorage.getItem(
+    "jddhm_access_granted"
+  ) === "true";
+
+if (!hasAccess) {
+  const unlocked = askForAccessCode();
+
+  if (!unlocked) {
+    return;
+  }
+}
 };
 
 /* =========================
