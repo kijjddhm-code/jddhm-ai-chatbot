@@ -422,6 +422,9 @@ $("clearChatsButton")?.addEventListener("click", () => {
   renderRecentChats();
   notify("Recent chats cleared", "🗑️");
 });
+/* =========================
+   BUTTONS
+========================= */
 
 /* =========================
    HAMBURGER MENU
@@ -430,6 +433,9 @@ $("clearChatsButton")?.addEventListener("click", () => {
 $("menuButton")?.addEventListener("click", () => {
   document.body.classList.toggle("sidebar-open");
 });
+
+$("newChatButton")?.addEventListener("click", newChat);
+
 
 /* =========================
    LOGIN / ACCOUNT DEMO
