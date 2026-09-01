@@ -2855,3 +2855,97 @@ body.answer-size-huge .answer-text {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* =====================================
+   SETTINGS — BLACK BACKGROUND
+   WHITE WORDS
+===================================== */
+
+#settingsModal .modal-content {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  padding: 24px !important;
+  border: 1px solid #333333;
+  border-radius: 18px;
+}
+
+/* Settings title */
+#settingsModal h2,
+#settingsModal h3 {
+  color: #ffffff !important;
+}
+
+/* All normal text */
+#settingsModal p,
+#settingsModal span,
+#settingsModal label,
+#settingsModal strong,
+#settingsModal small {
+  color: #ffffff !important;
+}
+
+/* Each setting box */
+#settingsModal .setting-item,
+#settingsModal .setting-row,
+#settingsModal .settings-item {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  padding: 18px !important;
+  margin-bottom: 14px;
+  border: 1px solid #333333;
+  border-radius: 14px;
+}
+
+/* Setting descriptions */
+#settingsModal .setting-description {
+  color: #dddddd !important;
+}
+
+/* Dropdown */
+#settingsModal select {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: 1px solid #555555;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+/* Dropdown options */
+#settingsModal option {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Checkboxes */
+#settingsModal input[type="checkbox"] {
+  accent-color: #22c55e;
+  width: 20px;
+  height: 20px;
+}
+
+/* Clear Recent Chats button */
+#clearChatsButtonSettings {
+  background-color: #222222 !important;
+  color: #ffffff !important;
+  border: 1px solid #555555;
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+
+#clearChatsButtonSettings:hover {
+  background-color: #333333 !important;
+}
+
+/* Close button */
+#settingsModal [data-close-modal] {
+  color: #ffffff !important;
+}
+
+/* Make the hamburger menu visible */
+#mobileMenuButton,
+#desktopMenuButton {
+  color: #ffffff !important;
+  background-color: #111111;
+  border: 1px solid #333333;
+}
+
