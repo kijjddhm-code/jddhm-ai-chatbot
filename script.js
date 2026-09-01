@@ -9,7 +9,7 @@ COMPLETE SCRIPT.JS
 CONFIGURATION
 ========================================= */
 
-const MAX_FREE_SEARCHES = 1000;
+const MAX_FREE_SEARCHES = 100;
 
 /*
 DEMO ACCESS CODE
