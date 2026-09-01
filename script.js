@@ -424,6 +424,14 @@ $("clearChatsButton")?.addEventListener("click", () => {
 });
 
 /* =========================
+   HAMBURGER MENU
+========================= */
+
+$("menuButton")?.addEventListener("click", () => {
+  document.body.classList.toggle("sidebar-open");
+});
+
+/* =========================
    LOGIN / ACCOUNT DEMO
 ========================= */
 
